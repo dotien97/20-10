@@ -249,7 +249,7 @@
                 opacity: 0.5;
             }
         }
-
+        
         .front {
             position: absolute;
             border-right: 180px solid #f4978e;
@@ -284,6 +284,84 @@
             animation: scale 3s linear infinite;
             z-index: -1;
         }
+        /* --- Override rule để đảm bảo #rose-t svg hiển thị đúng --- */
+#rose-t {
+  opacity: 1;                /* chắc chắn container không ẩn */
+  transform: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ĐẶC BIỆT: chỉ ảnh hưởng tới SVG trong #rose-t (không chạm tới các SVG khác) */
+#rose-t svg {
+  position: relative !important;
+  display: block !important;
+  width: 260px !important;
+  height: auto !important;
+  margin: 0 !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  z-index: 5 !important;
+  
+
+  /* animation xuất hiện */
+  opacity: 0;
+  transform: scale(0.6) rotate(-6deg);
+  animation: roseEnter 1.2s ease-out forwards, sway 6s ease-in-out infinite 2.2s;
+}
+
+/* keyframes xuất hiện nở */
+@keyframes roseEnter {
+  0%   { opacity: 0; transform: scale(0.4) rotate(-20deg); filter: blur(4px); }
+  65%  { opacity: 1; transform: scale(1.06) rotate(6deg); filter: blur(0); }
+  100% { opacity: 1; transform: scale(1) rotate(0); filter: none; }
+}
+
+/* nhẹ nhàng đung đưa */
+@keyframes sway {
+  0%   { transform: translateY(0) rotate(0deg); }
+  50%  { transform: translateY(-4px) rotate(2deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+/* cánh hoa nở dần (đặt delay để có hiệu ứng tầng) */
+.rose1, .rose2, .rose3, .rose4 {
+  transform-origin: center;
+  opacity: 0;
+  transform: scale(0);
+  animation: bloom 1.2s ease-out forwards;
+}
+.rose1 { animation-delay: 0.2s; }
+.rose2 { animation-delay: 0.35s; }
+.rose3 { animation-delay: 0.5s; }
+.rose4 { animation-delay: 0.65s; }
+
+@keyframes bloom {
+  0%   { transform: scale(0); opacity: 0; }
+  80%  { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* lá mọc lên sau */
+.leafOne, .leafTwo, .stickLine, .leafS1 {
+  opacity: 0;
+  transform: translateY(18px) scale(0.9);
+  animation: growLeaf 0.9s ease-out forwards;
+  animation-delay: 0.9s;
+}
+@keyframes growLeaf {
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* hover glow nhẹ */
+#rose-t svg:hover path {
+  filter: drop-shadow(0 0 10px rgba(255,100,150,0.55));
+  transition: filter .25s ease;
+}
+
 
         @keyframes scale {
 
@@ -1150,7 +1228,8 @@
         // chữ của thư bạn muốn gửi
         let indexTextContent = 0;
         let textLetterContent = document.querySelector('.contentLetter');
-        const textLetterP = "Hôm nay là ngày 20/10 anh chúc em luôn vui vẻ, và luôn xinh đẹp nhé, bớt khó tính lại nha =)))\nFrom Tiến Đỗ with love !!!";
+        const textLetterP = "Hôm nay là ngày 20/10 anh chúc em luôn vui vẻ và luôn xinh đẹp nhé, bớt khó tính lại nha =)))         From Tiến Đỗ with love !!!";
+
         let timoutTextLetterContent;
         function textCharLetterContent() {
             if (indexTextContent < textLetterP.length) {
